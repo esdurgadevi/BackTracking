@@ -141,13 +141,9 @@ Constraints:
 2 <= candidates[i] <= 40
 All elements of candidates are distinct.
 1 <= target <= 40
-
-<br>
-![image](https://github.com/user-attachments/assets/336e9217-11ea-46a9-b05a-355fdd3faeb6)
-<br>
+![image](https://github.com/user-attachments/assets/4014d771-435c-4ff6-8188-7747d25c151a)
 ![image](https://github.com/user-attachments/assets/5de1d9b2-be2d-4874-bb6f-e57b77666502)
 <br>
-
 ```java
 class Solution {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
@@ -187,5 +183,13 @@ class Solution {
     }
 }
 ```
+- In the combination problem we have two option one is pick another one is not pick. First we call the function for zeroth index and target.
+- Then the one option is to take the same index and the another one is to take the next index that is (not taking condition).
+- In the taking option we must reduce the the target by the current index value. We take the current index value only the target value is greater than the current index value.
+- So that time we repeatly call the function for the same index. Whenever it reach the last index then it will got to the base condition and check if the target value is zero or not if the target value is zero then we added to the answer otherwise we did not added to the answer we simply return it.
+- so we backtrack the condition so we remove the current index value from a1 then we call the function for the next index.
+- then it will do the same for that index.
+- in the image one pop will shown we add the element then we do all the operation then we pop it to the back track condition then we add the element.
+
 
 
