@@ -401,3 +401,45 @@ class Solution {
 - In this code we take one index in that index we continously call the next next index if the current index value is equal to the previous index value then we continue.
 - Other wise we add the element and find the next index then we remove the finally added element. This is same as the combination sum 2. 
 > [Reference](https://www.youtube.com/watch?v=RIn3gOkbhQE&list=PLgUwDviBIf0rGlzIn_7rsaR2FQ5e6ZOL9&index=13)
+### 1415. The k-th Lexicographical String of All Happy Strings of Length n
+[Leetcode link](https://leetcode.com/problems/the-k-th-lexicographical-string-of-all-happy-strings-of-length-n/?envType=daily-question&envId=2025-02-19)
+<br>
+```java
+class Solution {
+    public String getHappyString(int n, int k) {
+        List<Character> arr = new ArrayList<>();
+        List<List<Character>> list = new ArrayList<>();
+        find(n,arr,list);
+        if(list.size()<k) return "";
+        else
+        {
+            StringBuilder ans = new StringBuilder();
+            List<Character> t = list.get(k-1);
+            for(char x:t) ans.append(x);
+            return ans.toString();
+        }
+    }
+    public void find(int n,List<Character> arr,List<List<Character>> list)
+    {
+        if(arr.size()>=n)
+        {
+            list.add(new ArrayList<>(arr));
+            return;
+        }
+        char[] ch = {'a','b','c'};
+        for(char x:ch)
+        {
+            if(arr.size()==0 || arr.get(arr.size()-1)!=x)
+            {
+                arr.add(x);
+                find(n,arr,list);
+                arr.remove(arr.size()-1);
+            }
+        }
+    }
+}
+```
+- In this method we back track and find the answer first we generate all the strings using a b c with length of n but no consecutive repetation.
+- for this base condition is size greater than the n
+- for each charater from a to b if it is empty or not previous one add that and call the function for back track after calling remove it.
+
