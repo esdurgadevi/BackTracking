@@ -443,3 +443,85 @@ class Solution {
 - for this base condition is size greater than the n
 - for each charater from a to b if it is empty or not previous one add that and call the function for back track after calling remove it.
 
+### 1980. Find Unique Binary String
+[Leetcode link](https://leetcode.com/problems/find-unique-binary-string/?envType=daily-question&envId=2025-02-20)
+<br>
+Given an array of strings nums containing n unique binary strings each of length n, return a binary string of length n that does not appear in nums. If there are multiple answers, you may return any of them.
+
+ 
+
+Example 1:
+
+Input: nums = ["01","10"]
+Output: "11"
+Explanation: "11" does not appear in nums. "00" would also be correct.
+Example 2:
+
+Input: nums = ["00","01"]
+Output: "11"
+Explanation: "11" does not appear in nums. "10" would also be correct.
+Example 3:
+
+Input: nums = ["111","011","001"]
+Output: "101"
+Explanation: "101" does not appear in nums. "000", "010", "100", and "110" would also be correct.
+ 
+
+Constraints:
+
+n == nums.length
+1 <= n <= 16
+nums[i].length == n
+nums[i] is either '0' or '1'.
+All the strings of nums are unique.
+
+```java
+class Solution {
+    public String findDifferentBinaryString(String[] nums) {
+        StringBuilder str = new StringBuilder();
+        List<String> list = new ArrayList<>();
+        find(nums[0].length(),list,str);
+        for(String x:nums) 
+        {
+            list.remove(x);
+        }
+        return list.get(0);
+    }
+    public void find(int n,List<String> list,StringBuilder str)
+    {
+        if(str.length()==n) 
+        {
+            list.add(new String(str.toString()));
+            return;
+        }
+        str.append('0');
+        find(n,list,str);
+        str.deleteCharAt(str.length()-1);
+        str.append('1');
+        find(n,list,str);
+        str.deleteCharAt(str.length()-1);
+    }
+}
+```
+- Using back tracking we generate all the string with length n that is strings length then which string not present in the nums array then we return that string.
+
+#### Other Method:
+```java
+class Solution {
+    public String findDifferentBinaryString(String[] nums) {
+        StringBuilder ans= new StringBuilder();                  
+        for(int i=0; i<nums.length; i++)  
+            ans.append(nums[i].charAt(i) == '0' ? '1' : '0');              // Using ternary operator
+        return ans.toString();
+    }
+}
+```
+- The trick to do this question is somewhat similar toCantor's Diagonalization. You can read about it in detailhere.
+
+- Since we are given that number of bits in the number is equal to number of elements.
+- What we can do is we create a binary string which differs from first binary at 1st position, second binary at 2nd position, third binary at 3rd position,...and so on.
+
+- This will make sure that the binary we have made is unique (as it differs from all others at atleast one position).
+
+- We create an empty string first.
+- And simply iterate through the binary strings while putting the flipped bit of ith bit of "binary at ith position".
