@@ -525,3 +525,58 @@ class Solution {
 
 - We create an empty string first.
 - And simply iterate through the binary strings while putting the flipped bit of ith bit of "binary at ith position".
+### 46. Permutations
+[Leetcode link](https://leetcode.com/problems/permutations/)
+<br>
+Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3]
+Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+Example 2:
+
+Input: nums = [0,1]
+Output: [[0,1],[1,0]]
+Example 3:
+
+Input: nums = [1]
+Output: [[1]]
+ 
+
+Constraints:
+
+1 <= nums.length <= 6
+-10 <= nums[i] <= 10
+All the integers of nums are unique.
+
+```java
+class Solution {
+    public void find(int[] nums,List<List<Integer>> ans,List<Integer> arr,boolean[] freq)
+    {
+        if(arr.size()==nums.length){
+            ans.add(new ArrayList<>(arr));
+            return;
+        }
+        for(int i=0;i<nums.length;i++){
+            if(!freq[i]){
+                freq[i] = true;
+                arr.add(nums[i]);
+                find(nums,ans,arr,freq);
+                arr.remove(arr.size()-1);
+                freq[i] = false;
+            }
+        }
+    }
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> arr = new ArrayList<>();
+        boolean[] freq = new boolean[nums.length];
+        find(nums,ans,arr,freq);
+        return ans;
+    }
+}
+```
+> [Reference](https://www.youtube.com/watch?v=YK78FU5Ffjw)
