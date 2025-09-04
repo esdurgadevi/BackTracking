@@ -657,3 +657,168 @@ class Solution {
     }
 }
 ```
+### 3669. Balanced K-Factor Decomposition
+[Leetcode link](https://leetcode.com/problems/balanced-k-factor-decomposition/description/)
+<br>
+Given two integers n and k, split the number n into exactly k positive integers such that the product of these integers is equal to n.
+
+Return any one split in which the maximum difference between any two numbers is minimized. You may return the result in any order.
+
+ 
+
+Example 1:
+
+Input: n = 100, k = 2
+
+Output: [10,10]
+
+Explanation:
+
+The split [10, 10] yields 10 * 10 = 100 and a max-min difference of 0, which is minimal.
+
+Example 2:
+
+Input: n = 44, k = 3
+
+Output: [2,2,11]
+
+Explanation:
+
+Split [1, 1, 44] yields a difference of 43
+Split [1, 2, 22] yields a difference of 21
+Split [1, 4, 11] yields a difference of 10
+Split [2, 2, 11] yields a difference of 9
+Therefore, [2, 2, 11] is the optimal split with the smallest difference 9.
+
+ 
+
+Constraints:
+
+4 <= n <= 105
+2 <= k <= 5
+k is strictly less than the total number of positive divisors of n.
+
+```java
+class Solution {
+    public void find(int n,int k,int start,List<Integer> curr,List<Integer> best)
+    {
+        if(k == 0)
+        {
+            if(n == 1)
+            {
+                int min = Collections.min(curr);
+                int max = Collections.max(curr);
+                int d = max-min;
+                if (best.isEmpty() || d < (Collections.max(best) - Collections.min(best))) {
+                    best.clear();
+                    best.addAll(new ArrayList<>(curr));
+                }
+            }
+            return;
+        }
+        for(int i=start;i<=n;i++)
+        {
+            if(n%i==0)
+            {
+                curr.add(i);
+                find(n/i,k-1,i,curr,best);
+                curr.remove(curr.size()-1);
+            }
+        }
+    }
+    public int[] minDifference(int n, int k) {
+        List<Integer> best = new ArrayList<>();
+        find(n,k,1,new ArrayList<>(),best);
+        int[] ans = new int[best.size()];
+        for(int i=0;i<best.size();i++)
+        {
+            ans[i] = best.get(i);
+        }
+        return ans;
+    }
+}
+```
+- In this code we find the k numbers who's multiply is n and the list's maximum and minimum numbers diffrence is minimum compare to all other list.
+- So i call initially n k and start as 1 if it is equal to 0 then we get all the k numbers and if it is then n is equal to 1 means our getted number's multiplication is equal to n.
+- then check this path is minimized compare to the best path it it is means we update the best path as current path
+- if the k is not equal means we travel from start to n if it is divided by i means we added to the current i to the list then from the current i we call againe.
+### 1091. Shortest Path in Binary Matrix
+[Leetcode link](https://leetcode.com/problems/shortest-path-in-binary-matrix/description/)
+<br>
+Given an n x n binary matrix grid, return the length of the shortest clear path in the matrix. If there is no clear path, return -1.
+
+A clear path in a binary matrix is a path from the top-left cell (i.e., (0, 0)) to the bottom-right cell (i.e., (n - 1, n - 1)) such that:
+
+All the visited cells of the path are 0.
+All the adjacent cells of the path are 8-directionally connected (i.e., they are different and they share an edge or a corner).
+The length of a clear path is the number of visited cells of this path.
+
+ 
+
+Example 1:
+
+
+Input: grid = [[0,1],[1,0]]
+Output: 2
+Example 2:
+
+
+Input: grid = [[0,0,0],[1,1,0],[1,1,0]]
+Output: 4
+Example 3:
+
+Input: grid = [[1,0,0],[1,1,0],[1,1,0]]
+Output: -1
+ 
+
+Constraints:
+
+n == grid.length
+n == grid[i].length
+1 <= n <= 100
+grid[i][j] is 0 or 1
+
+```java
+class Solution {
+    public boolean is_valid(int x,int y,int[][] g,boolean[][] v)
+    {
+        return (x>=0 && y>=0 && x<g.length && y<g[0].length && g[x][y]==0 && !v[x][y]);
+    }
+    public int[] ax = {0, 0, 1, -1, 1, -1, 1, -1};
+    public int[] ay = {1, -1, 0, 0, 1, 1, -1, -1};
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        if(grid[0][0] == 1 || grid[grid.length-1][grid[0].length-1] == 1) return -1;
+        boolean[][] v = new boolean[grid.length][grid[0].length];
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{0,0,1});
+        v[0][0] = true;
+        while(!q.isEmpty())
+        {
+            int size = q.size();
+            while(size>0)
+            {
+                int[] curr = q.poll();
+                if(curr[0] == grid.length-1  && curr[1] == grid[0].length-1)
+                {
+                    return curr[2];
+                }
+                for(int i=0;i<8;i++)
+                {
+                    int nx = ax[i]+curr[0]; 
+                    int ny = ay[i]+curr[1];
+                    if(is_valid(nx,ny,grid,v))
+                    {
+                        System.out.println(nx+" "+ny);
+                        v[nx][ny] = true;
+                        q.add(new int[]{nx,ny,curr[2]+1});
+                    }
+                }   
+                size--;
+            }
+        }
+        return -1;
+    }
+}
+```
+-  In this they ask the minimum distance to reach the  goal state so the goal is always the last cell and the initial state is 0,0 each cell we move is considered as 1 cost we want to minimize our cost.
+-  Also we move 8 directions from the currrent cell also we must move which are the cell have 0 so then only we move so find minimum we use bfs at each level we check weather we reach the goal or not as muc we reach the goal then we return the level.
